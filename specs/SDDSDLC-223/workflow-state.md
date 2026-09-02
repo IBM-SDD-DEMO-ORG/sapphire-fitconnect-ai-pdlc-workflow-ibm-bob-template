@@ -7,7 +7,7 @@
 - Last Updated: 2025-07-17
 
 ## CURRENT_STAGE
-PHASE_3B_PENDING
+PHASE_4B_PLAN_APPROVAL_PENDING
 
 ## Completed Phases
 - [x] Phase 1: Constitution Verified
@@ -16,11 +16,11 @@ PHASE_3B_PENDING
 - [x] Phase 3: Specification Created
 - [x] CHECKPOINT 2: Submitter Review
 - [x] Phase 3A: Spec PR Raised
-- [ ] Phase 3B: Spec PR Approved
-- [ ] Phase 3C: Plan Entry Gates
-- [ ] Phase 4: Plan
-- [ ] CHECKPOINT 2A: Submitter Plan Review
-- [ ] Phase 4A: Plan PR Raised
+- [x] Phase 3B: Spec PR Approved
+- [x] Phase 3C: Plan Entry Gates
+- [x] Phase 4: Plan
+- [x] CHECKPOINT 2A: Submitter Plan Review — PASSED (user approved 2025-07-17)
+- [x] Phase 4A: Plan PR Raised — PR #2 https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/2
 - [ ] Phase 4B: Plan Approved
 - [ ] Phase 5: Child Stories Created
 - [ ] Phase 6A: Tasks Entry Gates
@@ -42,9 +42,9 @@ PHASE_3B_PENDING
 
 ## Key Data
 - Spec PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/1
-- Spec Approval (`product_owner`): (pending)
-- Plan PR: (not yet raised)
-- Plan Approval (`fde`): (pending)
+- Spec Approval (`product_owner`): MERGED (no formal review — PR merged directly)
+- Plan PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/2
+- Plan Approval (`fde`): PENDING — awaiting FDE review/approval
 - Tasks PR: (not yet raised)
 - Tasks Approval (`fde`): (pending)
 - Implementation PRs: (pending)

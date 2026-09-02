@@ -1,0 +1,152 @@
+# GraphQL SDL Extension: Body Temperature
+# Story: SDDSDLC-223 — Add Support for Body Temperature Metric Ingestion, Storage, and Reporting
+# Repo: sapphire-bff-api (Apollo Server)
+# Extends the existing schema in src/schema/typeDefs.js
+
+# ---------------------------------------------------------------------------
+# Types
+# ---------------------------------------------------------------------------
+
+"""A single body temperature reading stored in the platform."""
+type BodyTemperatureReading {
+  id: ID!
+  userId: String!
+  """Temperature value in the stored unit."""
+  value: Float!
+  """Unit of measurement: C (Celsius) or F (Fahrenheit)."""
+  unit: TemperatureUnit!
+  """UTC ISO-8601 timestamp of the measurement."""
+  timestamp: String!
+  """Device identifier; null for manual entries."""
+  deviceSource: String
+  """How the record entered the system."""
+  ingestionSource: IngestionSource!
+  """Optional measurement method (e.g. oral, axillary, tympanic)."""
+  measurementMethod: String
+  """Server-side insert timestamp (UTC ISO-8601)."""
+  createdAt: String!
+}
+
+"""Aggregated trend data for body temperature over a time range."""
+type BodyTemperatureTrend {
+  userId: String!
+  rangeStart: String!
+  rangeEnd: String!
+  granularity: TrendGranularity!
+  unit: TemperatureUnit!
+  deviceSource: String
+  min: Float
+  max: Float
+  average: Float
+  recordCount: Int!
+  buckets: [TemperatureTrendBucket!]!
+}
+
+"""A single time-bucket within a BodyTemperatureTrend."""
+type TemperatureTrendBucket {
+  periodStart: String!
+  min: Float!
+  max: Float!
+  average: Float!
+  count: Int!
+}
+
+"""Result of adding a body temperature reading."""
+type AddBodyTemperatureReadingResult {
+  """The stored record; null when duplicate (idempotent)."""
+  record: BodyTemperatureReading
+  """CREATED | DUPLICATE"""
+  status: WriteStatus!
+}
+
+# ---------------------------------------------------------------------------
+# Input types
+# ---------------------------------------------------------------------------
+
+"""Input payload for a single body temperature reading."""
+input BodyTemperatureReadingInput {
+  userId: String!
+  value: Float!
+  unit: TemperatureUnit!
+  """UTC ISO-8601 timestamp."""
+  timestamp: String!
+  deviceSource: String
+  ingestionSource: IngestionSource!
+  measurementMethod: String
+}
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+"""Temperature unit."""
+enum TemperatureUnit {
+  C
+  F
+}
+
+"""How a metric reading entered the system."""
+enum IngestionSource {
+  device
+  api
+  manual
+}
+
+"""Time-bucket granularity for trend queries."""
+enum TrendGranularity {
+  day
+  week
+  month
+}
+
+"""Outcome of a write operation."""
+enum WriteStatus {
+  CREATED
+  DUPLICATE
+}
+
+# ---------------------------------------------------------------------------
+# Query extensions
+# ---------------------------------------------------------------------------
+
+extend type Query {
+  """
+  Retrieve paginated body temperature readings for a user.
+  Returns readings in descending timestamp order.
+  """
+  bodyTemperatureReadings(
+    userId: String!
+    rangeStart: String
+    rangeEnd: String
+    deviceSource: String
+    page: Int
+    pageSize: Int
+  ): [BodyTemperatureReading!]!
+
+  """
+  Retrieve aggregated body temperature trend data for a user.
+  Buckets are computed at the requested granularity (day/week/month).
+  """
+  bodyTemperatureTrends(
+    userId: String!
+    rangeStart: String!
+    rangeEnd: String!
+    granularity: TrendGranularity
+    deviceSource: String
+  ): BodyTemperatureTrend!
+}
+
+# ---------------------------------------------------------------------------
+# Mutation extensions
+# ---------------------------------------------------------------------------
+
+extend type Mutation {
+  """
+  Ingest a single body temperature reading.
+  Idempotent: re-submitting an identical record returns DUPLICATE with the
+  existing record rather than creating a duplicate entry.
+  """
+  addBodyTemperatureReading(
+    input: BodyTemperatureReadingInput!
+  ): AddBodyTemperatureReadingResult!
+}

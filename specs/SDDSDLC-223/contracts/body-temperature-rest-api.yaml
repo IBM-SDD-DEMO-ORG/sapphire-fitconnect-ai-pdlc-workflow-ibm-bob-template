@@ -1,0 +1,330 @@
+openapi: "3.1.0"
+info:
+  title: Body Temperature Ingestion & Reporting API
+  description: |
+    Contract for the body temperature metric endpoints added to sapphire-fitconnect-health-service.
+    Story: SDDSDLC-223
+  version: "1.0.0"
+
+tags:
+  - name: Ingestion
+    description: Submit temperature readings
+  - name: Reporting
+    description: Query temperature trends and export data
+
+paths:
+  /api/v1/metrics/body-temperature:
+    post:
+      summary: Ingest a single temperature reading
+      tags: [Ingestion]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemperatureRecordRequest'
+            examples:
+              celsius:
+                summary: Celsius reading from wearable
+                value:
+                  user_id: "usr_abc123"
+                  value: 37.2
+                  unit: "C"
+                  timestamp: "2025-07-17T10:30:00Z"
+                  device_source: "fitconnect-band-v2"
+                  ingestion_source: "device"
+              manual:
+                summary: Manual entry by user
+                value:
+                  user_id: "usr_abc123"
+                  value: 98.6
+                  unit: "F"
+                  timestamp: "2025-07-17T10:30:00Z"
+                  device_source: null
+                  ingestion_source: "manual"
+                  measurement_method: "oral"
+      responses:
+        "201":
+          description: Record stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureRecordResponse'
+        "200":
+          description: Duplicate record — idempotent success (record already exists)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureRecordResponse'
+        "400":
+          description: Missing required field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "422":
+          description: Validation failure (out-of-range value, future timestamp, invalid enum)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Unauthorized
+
+  /api/v1/metrics/body-temperature/batch:
+    post:
+      summary: Ingest a batch of temperature readings
+      tags: [Ingestion]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [records]
+              properties:
+                records:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TemperatureRecordRequest'
+                  minItems: 1
+                  maxItems: 100
+      responses:
+        "207":
+          description: Partial or full success — per-record results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchIngestionResponse'
+        "400":
+          description: Request-level validation failure (e.g. empty batch)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Unauthorized
+
+  /api/v1/metrics/body-temperature/trends:
+    get:
+      summary: Get temperature trend data for a user
+      tags: [Reporting]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: range_start
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Inclusive start (UTC ISO-8601)
+        - name: range_end
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Inclusive end (UTC ISO-8601)
+        - name: granularity
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [day, week, month]
+          description: Bucket granularity; defaults to `day`
+        - name: device_source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter to a specific device source
+      responses:
+        "200":
+          description: Trend data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureTrendResponse'
+        "200 (empty)":
+          description: No records in range — returns empty buckets array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureTrendResponse'
+        "400":
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    TemperatureRecordRequest:
+      type: object
+      required: [user_id, value, unit, timestamp, ingestion_source]
+      properties:
+        user_id:
+          type: string
+          description: Authenticated user identifier
+        value:
+          type: number
+          format: double
+          description: Temperature value in the specified unit
+        unit:
+          type: string
+          enum: [C, F]
+          description: Unit of measurement
+        timestamp:
+          type: string
+          format: date-time
+          description: UTC ISO-8601 timestamp of the measurement
+        device_source:
+          type: string
+          nullable: true
+          description: Device identifier; null for manual entries
+        ingestion_source:
+          type: string
+          enum: [device, api, manual]
+        measurement_method:
+          type: string
+          nullable: true
+          description: Optional — e.g. oral, axillary, tympanic
+
+    TemperatureRecordResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+        value:
+          type: number
+        unit:
+          type: string
+          enum: [C, F]
+        timestamp:
+          type: string
+          format: date-time
+        device_source:
+          type: string
+          nullable: true
+        ingestion_source:
+          type: string
+          enum: [device, api, manual]
+        measurement_method:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    BatchIngestionResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: Zero-based index of the record in the submitted batch
+              status:
+                type: string
+                enum: [created, duplicate, error]
+              id:
+                type: string
+                format: uuid
+                nullable: true
+                description: Record ID if stored; null on error
+              error:
+                type: string
+                nullable: true
+                description: Error message if status is error
+
+    TemperatureTrendResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+        range_start:
+          type: string
+          format: date-time
+        range_end:
+          type: string
+          format: date-time
+        granularity:
+          type: string
+          enum: [day, week, month]
+        unit:
+          type: string
+          enum: [C, F]
+        device_source:
+          type: string
+          nullable: true
+        min:
+          type: number
+          nullable: true
+          description: null when no records in range
+        max:
+          type: number
+          nullable: true
+        average:
+          type: number
+          nullable: true
+        record_count:
+          type: integer
+        buckets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrendBucket'
+
+    TrendBucket:
+      type: object
+      properties:
+        period_start:
+          type: string
+          format: date-time
+        min:
+          type: number
+        max:
+          type: number
+        average:
+          type: number
+        count:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code
+        message:
+          type: string
+          description: Human-readable error description
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: Per-field validation errors (present on 400/422)
