@@ -41,7 +41,7 @@ PHASE_3B_PENDING
 - [ ] CHECKPOINT 5: PRs Created
 
 ## Key Data
-- Spec PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/compare/SDDSDLC-223 (manually raise — GitHub MCP not connected)
+- Spec PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/1
 - Spec Approval (`product_owner`): (pending)
 - Plan PR: (not yet raised)
 - Plan Approval (`fde`): (pending)
