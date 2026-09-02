@@ -4,7 +4,7 @@
 **Created**: 2025-07-17
 **Status**: Draft
 **Jira Story**: [SDDSDLC-223](https://jsw.ibm.com/browse/SDDSDLC-223)
-**Affected Repos**: `sapphire-fitconnect-health-service`, `sapphire-fitconnect-web`
+**Affected Repos**: `sapphire-charting-api`, `sapphire-bff-api`, `Sapphire`
 
 ---
 
