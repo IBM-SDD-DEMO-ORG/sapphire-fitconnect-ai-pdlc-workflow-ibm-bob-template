@@ -8,6 +8,18 @@
 
 ---
 
+## Clarifications
+
+### Session 2025-07-17
+
+- Q: Should the frontend allow users to switch the display unit between °C and °F, or is the unit fixed to what was stored? → A: View-only client-side toggle — frontend converts °C↔°F for display; stored value never changes; no API change required (Option B)
+- Q: When a device submits a temperature reading identical to an existing record (same user, device, timestamp, value), how should the system behave? → A: Idempotent — return success without storing a second copy; duplicate is silently discarded (Option B)
+- Q: When a device submits a temperature reading with a timestamp in the future (clock drift), how should the system behave? → A: Reject with HTTP 422 if timestamp is more than 5 minutes ahead of server time; minor clock drift accepted (Option B)
+- Q: Are user-entered (manual) temperature readings in scope for this story? → A: In scope — manual entry supported via same ingestion API using `ingestion_source: manual`; no separate UI flow needed (Option B)
+- Q: Roughly how many temperature readings per user per day should the system be designed to handle? → A: 4–12 readings per user per day (wearable monitoring, one reading every 2–6 hours)
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Ingest and Store Temperature Readings (Priority: P1)
@@ -65,11 +77,11 @@ A user (or their healthcare provider via delegated access) exports their health 
 
 ### Edge Cases
 
-- What happens when a device submits a temperature reading with a timestamp in the future (clock drift)?
-- How does the system handle duplicate readings with identical user, device, timestamp, and value?
+- Future timestamps more than 5 minutes ahead of server time are rejected with HTTP 422; up to 5 minutes tolerance is accepted for clock drift (resolved — see FR-003a).
+- Duplicate readings (identical user, device, timestamp, value) are silently discarded; ingestion returns success without storing a second copy (resolved — see FR-005a).
 - What if a batch submission contains a mix of valid and invalid records — are valid records stored and invalid ones reported individually, or is the entire batch rejected?
 - How is the physiological validation range configured, and what happens if the configuration is absent or malformed?
-- What happens if a user switches the display unit (°C ↔ °F) — is the stored value converted or is conversion view-only?
+- Unit display switching (°C ↔ °F) is a view-only client-side conversion; the stored value is never modified (resolved — see FR-020).
 - How are daily/weekly/monthly rollups handled when records span a daylight-saving-time boundary?
 
 ---
@@ -79,20 +91,22 @@ A user (or their healthcare provider via delegated access) exports their health 
 ### Functional Requirements
 
 **Ingestion**
-- **FR-001**: The system MUST accept body temperature readings submitted individually or in batches from integrated smart devices and third-party APIs.
+- **FR-001**: The system MUST accept body temperature readings submitted individually or in batches from integrated smart devices, third-party APIs, and manual user entry. All three ingestion paths use the same ingestion API; the `ingestion_source` field MUST be set to `device`, `api`, or `manual` accordingly.
 - **FR-002**: The system MUST support temperature values expressed in both Celsius (°C) and Fahrenheit (°F); the submitted unit MUST be preserved as-is in storage.
 - **FR-003**: The system MUST validate each temperature value against a configurable physiological range; out-of-range values MUST be rejected with a field-level error identifying the value, submitted unit, and the acceptable range bounds.
+- **FR-003a**: The system MUST reject any temperature record whose timestamp is more than 5 minutes ahead of the server's current UTC time with an HTTP 422 response identifying the invalid timestamp field; records with timestamps up to 5 minutes in the future MUST be accepted to accommodate minor device clock drift.
 - **FR-004**: Each stored temperature record MUST be associated with: user identifier, UTC timestamp, device source identifier, ingestion source (API/device/manual), and optionally a measurement method.
 - **FR-005**: For batch submissions, the system MUST process each record independently; valid records MUST be stored even if other records in the same batch are invalid, and the response MUST itemise per-record success or failure.
+- **FR-005a**: The ingestion API MUST be idempotent with respect to duplicate records; a submission with the same user identifier, device source, timestamp, and value as an existing record MUST be silently discarded and MUST return a success response (HTTP 200 or 201) without creating a second record.
 
 **Data Model**
 - **FR-006**: The system MUST add `body_temperature` as a named metric type in the existing health metrics catalog.
-- **FR-007**: The temperature record schema MUST include: `value` (decimal), `unit` (enum: `C` | `F`), `timestamp` (UTC ISO-8601), `device_source` (string), `ingestion_source` (string), `measurement_method` (optional string).
+- **FR-007**: The temperature record schema MUST include: `value` (decimal), `unit` (enum: `C` | `F`), `timestamp` (UTC ISO-8601), `device_source` (string, nullable for manual entries), `ingestion_source` (enum: `device` | `api` | `manual`), `measurement_method` (optional string).
 - **FR-008**: The updated data schema MUST be backward-compatible with existing metrics consumers; no existing metric type field MUST be renamed or removed.
 - **FR-009**: Internal and external API schema documentation MUST be updated to reflect the new `body_temperature` metric type and all its fields before the feature is released.
 
 **Storage & Processing**
-- **FR-010**: Temperature records MUST be stored in the existing metrics datastore with time-series indexing sufficient to support queries filtered by user and date range without full-table scans.
+- **FR-010**: Temperature records MUST be stored in the existing metrics datastore with time-series indexing sufficient to support queries filtered by user and date range without full-table scans. The system MUST be designed to handle up to 12 temperature records per user per day (approximately one reading every 2 hours); indexing and rollup strategies MUST remain performant at this volume for datasets spanning up to 2 years.
 - **FR-011**: Temperature records MUST follow existing retention and aggregation rules applied to other metric types.
 - **FR-012**: The system MUST support pre-computed daily, weekly, and monthly rollups (min, max, average) for temperature, consistent with the rollup strategy used for existing metrics.
 
@@ -106,7 +120,7 @@ A user (or their healthcare provider via delegated access) exports their health 
 - **FR-017**: The frontend MUST display body temperature in the user's metrics list alongside existing metrics.
 - **FR-018**: The frontend MUST provide a chart component for body temperature that supports selectable time ranges: day, week, and month.
 - **FR-019**: The chart MUST display the unit of measurement (°C or °F) clearly on the axis or legend.
-- **FR-020**: [NEEDS CLARIFICATION: Should the frontend allow users to switch the display unit between °C and °F, or is the unit fixed to what was stored? This affects both the chart component and the API contract.]
+- **FR-020**: The frontend MUST provide a view-only unit toggle (°C ↔ °F) on the temperature chart; conversion is performed client-side only. The backend API MUST always return the value and unit as stored; no unit-conversion query parameter is required on the trend endpoint.
 
 ### Key Entities
 
