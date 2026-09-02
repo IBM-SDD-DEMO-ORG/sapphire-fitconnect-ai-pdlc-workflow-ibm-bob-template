@@ -7,7 +7,7 @@
 - Last Updated: 2025-07-17
 
 ## CURRENT_STAGE
-CHECKPOINT_4_PENDING
+PHASE_9_PENDING
 
 ## Completed Phases
 - [x] Phase 1: Constitution Verified
@@ -35,8 +35,8 @@ CHECKPOINT_4_PENDING
 - [x] Phase 8A: Implementation Entry Gates — tasks PR #3 MERGED, gate passed
 - [x] Phase 8B: Generate Implementation Queue — impl-queue.md written (14 invocations, 6 tiers)
 - [x] Phase 8C: Implement — all 43 tasks complete (2025-07-17)
-- [ ] Phase 8D: Jira Stories Updated
-- [ ] CHECKPOINT 4: Validation Complete
+- [x] Phase 8D: Jira Stories Updated — SDDSDLC-228/229/230 commented (2025-07-17)
+- [x] CHECKPOINT 4: Validation Complete — confirmed 2025-07-17
 - [ ] Phase 9: Raise PRs
 - [ ] CHECKPOINT 5: PRs Created
 
