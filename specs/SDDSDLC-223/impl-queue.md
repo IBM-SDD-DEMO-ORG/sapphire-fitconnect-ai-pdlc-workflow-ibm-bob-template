@@ -12,35 +12,35 @@ Generated: 2025-07-17
 
 ### Tier 1 — Branch Setup (all repos, parallel)
 
-- [ ] Q01 sapphire-charting-api / Phase 1 — Setup
-- [ ] Q02 [P] sapphire-bff-api / Phase 1 — Setup
-- [ ] Q03 [P] Sapphire / Phase 1 — Setup
+- [x] Q01 sapphire-charting-api / Phase 1 — Setup
+- [x] Q02 [P] sapphire-bff-api / Phase 1 — Setup
+- [x] Q03 [P] Sapphire / Phase 1 — Setup
 
 ### Tier 2 — Foundational (charting-api first; bff-api contract test runs in parallel)
 
-- [ ] Q04 sapphire-charting-api / Phase 2 — Foundational
-- [ ] Q05 [P] sapphire-bff-api / Phase 2 — Foundational
+- [x] Q04 sapphire-charting-api / Phase 2 — Foundational
+- [x] Q05 [P] sapphire-bff-api / Phase 2 — Foundational
 
 ### Tier 3 — US1: Ingestion (charting-api only; bff-api and Sapphire unblock after Q04)
 
-- [ ] Q06 sapphire-charting-api / Phase 3 — [US1] Ingest and Store Temperature Readings (P1)
+- [x] Q06 sapphire-charting-api / Phase 3 — [US1] Ingest and Store Temperature Readings (P1)
 
 ### Tier 4 — US2: Trends + GraphQL + Chart (charting-api backend → bff-api → Sapphire)
 
-- [ ] Q07 sapphire-charting-api / Phase 4 — [US2] View Temperature History and Trends (P2)
-- [ ] Q08 sapphire-bff-api / Phase 4 — [US2] View Temperature History and Trends (P2)
-- [ ] Q09 [P] Sapphire / Phase 4 — [US2] View Temperature History and Trends (P2)
+- [x] Q07 sapphire-charting-api / Phase 4 — [US2] View Temperature History and Trends (P2)
+- [x] Q08 sapphire-bff-api / Phase 4 — [US2] View Temperature History and Trends (P2)
+- [x] Q09 [P] Sapphire / Phase 4 — [US2] View Temperature History and Trends (P2)
 
 ### Tier 5 — US3: Export + Dashboard (all three repos, charting-api → bff-api + Sapphire parallel)
 
-- [ ] Q10 sapphire-charting-api / Phase 5 — [US3] Export and Analytics Dashboard Inclusion (P3)
-- [ ] Q11 [P] sapphire-bff-api / Phase 5 — [US3] Export and Analytics Dashboard Inclusion (P3)
-- [ ] Q12 [P] Sapphire / Phase 5 — [US3] Export and Analytics Dashboard Inclusion (P3)
+- [x] Q10 sapphire-charting-api / Phase 5 — [US3] Export and Analytics Dashboard Inclusion (P3)
+- [x] Q11 [P] sapphire-bff-api / Phase 5 — [US3] Export and Analytics Dashboard Inclusion (P3)
+- [x] Q12 [P] Sapphire / Phase 5 — [US3] Export and Analytics Dashboard Inclusion (P3)
 
 ### Tier 6 — Polish & Cross-Cutting (all repos, parallel)
 
-- [ ] Q13 sapphire-charting-api / Phase 6 — Polish & Cross-Cutting Concerns
-- [ ] Q14 [P] sapphire-bff-api / Phase 6 — Polish & Cross-Cutting Concerns
+- [x] Q13 sapphire-charting-api / Phase 6 — Polish & Cross-Cutting Concerns
+- [x] Q14 [P] sapphire-bff-api / Phase 6 — Polish & Cross-Cutting Concerns
 
 ---
 
