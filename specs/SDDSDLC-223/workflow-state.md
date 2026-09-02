@@ -7,7 +7,7 @@
 - Last Updated: 2025-07-17
 
 ## CURRENT_STAGE
-PHASE_7C_PENDING
+PHASE_7D_PENDING
 
 ## Completed Phases
 - [x] Phase 1: Constitution Verified
@@ -28,7 +28,7 @@ PHASE_7C_PENDING
 - [x] CHECKPOINT 2B: Submitter Tasks Review — PASSED (user approved 2025-07-17)
 - [x] Phase 7A: Analysis Entry Gates — plan PR #2 MERGED, gate passed
 - [x] Phase 7B: Analyze — 0 CRITICAL, 3 MEDIUM fixed (C1/C2/G3); 5 LOW fixes applied
-- [ ] Phase 7C: Tasks PR Raised
+- [x] Phase 7C: Tasks PR Raised — PR #3 https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/3
 - [ ] Phase 7D: Tasks PR Approved
 - [ ] Phase 7E: Jira Stories Updated with Tasks
 - [ ] CHECKPOINT 3: Ready for Implementation
@@ -45,8 +45,8 @@ PHASE_7C_PENDING
 - Spec Approval (`product_owner`): MERGED (no formal review — PR merged directly)
 - Plan PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/2
 - Plan Approval (`fde`): MERGED (PR #2 merged directly — implicit FDE approval, 2025-07-17)
-- Tasks PR: (not yet raised)
-- Tasks Approval (`fde`): (pending)
+- Tasks PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/3
+- Tasks Approval (`fde`): PENDING — awaiting FDE review/approval
 - Implementation PRs: (pending)
 
 ## Child Stories
