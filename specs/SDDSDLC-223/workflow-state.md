@@ -4,10 +4,10 @@
 - Story ID: SDDSDLC-223
 - Story Title: Add Support for Body Temperature Metric Ingestion, Storage, and Reporting
 - Started: 2025-07-17
-- Last Updated: 2025-07-17
+- Last Updated: 2025-07-18
 
 ## CURRENT_STAGE
-PHASE_9_PENDING
+COMPLETE
 
 ## Completed Phases
 - [x] Phase 1: Constitution Verified
@@ -37,8 +37,8 @@ PHASE_9_PENDING
 - [x] Phase 8C: Implement — all 43 tasks complete (2025-07-17)
 - [x] Phase 8D: Jira Stories Updated — SDDSDLC-228/229/230 commented (2025-07-17)
 - [x] CHECKPOINT 4: Validation Complete — confirmed 2025-07-17
-- [ ] Phase 9: Raise PRs
-- [ ] CHECKPOINT 5: PRs Created
+- [x] Phase 9: Raise PRs — PRs created 2025-07-18
+- [x] CHECKPOINT 5: PRs Created — confirmed 2025-07-18
 
 ## Key Data
 - Spec PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/1
@@ -47,7 +47,11 @@ PHASE_9_PENDING
 - Plan Approval (`fde`): MERGED (PR #2 merged directly — implicit FDE approval, 2025-07-17)
 - Tasks PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/3
 - Tasks Approval (`fde`): MERGED (PR #3 merged directly — implicit FDE approval, 2025-07-17)
-- Implementation PRs: (pending)
+- Implementation PRs:
+  - sapphire-charting-api PR #1: https://github.com/IBM-SDD-DEMO-ORG/sapphire-charting-api/pull/1
+  - sapphire-bff-api PR #1: https://github.com/IBM-SDD-DEMO-ORG/sapphire-bff-api/pull/1
+  - Sapphire PR #1: https://github.com/IBM-SDD-DEMO-ORG/Sapphire/pull/1
+  - Orchestrator PR #4: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/pull/4
 
 ## Child Stories
 sapphire-charting-api: SDDSDLC-228
