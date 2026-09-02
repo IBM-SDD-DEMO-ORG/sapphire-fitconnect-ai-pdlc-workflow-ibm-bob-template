@@ -1,0 +1,157 @@
+{
+  "mcpServers": {
+    "jira": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "-e",
+        "JIRA_API_TOKEN",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
+      ],
+      "env": {
+        "JIRA_URL": "https://jsw.ibm.com/",
+        "JIRA_USERNAME": "",
+        "JIRA_API_TOKEN": ""
+      },
+      "alwaysAllow": [
+        "jira_transition_issue",
+        "jira_add_comment"
+      ],
+      "disabledTools": [
+        "jira_get_issue_watchers",
+        "jira_add_watcher",
+        "jira_remove_watcher",
+        "jira_search_fields",
+        "jira_get_worklog",
+        "jira_download_attachments",
+        "jira_get_issue_images",
+        "jira_get_agile_boards",
+        "jira_get_board_issues",
+        "jira_get_sprints_from_board",
+        "jira_get_sprint_issues",
+        "jira_batch_get_changelogs",
+        "jira_delete_issue",
+        "jira_add_worklog",
+        "jira_link_to_epic",
+        "jira_remove_issue_link",
+        "jira_create_sprint",
+        "jira_update_sprint",
+        "jira_add_issues_to_sprint",
+        "jira_get_project_versions",
+        "jira_get_project_components",
+        "jira_get_all_projects",
+        "jira_get_service_desk_for_project",
+        "jira_get_service_desk_queues",
+        "jira_get_queue_issues",
+        "jira_create_version",
+        "jira_batch_create_versions",
+        "jira_get_issue_proforma_forms",
+        "jira_get_proforma_form_details",
+        "jira_update_proforma_form_answers",
+        "jira_get_issue_dates",
+        "jira_get_issue_sla",
+        "jira_get_issue_development_info",
+        "jira_get_issues_development_info"
+      ]
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@cyanheads/git-mcp-server"
+      ],
+      "alwaysAllow": [
+        "git_add",
+        "git_commit",
+        "git_push",
+        "git_set_working_dir"
+      ],
+      "disabledTools": []
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ]
+    },
+    "github_local_mcp": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "-e",
+        "GITHUB_TOOLSETS",
+        "-e",
+        "GITHUB_READ_ONLY",
+        "-e",
+        "GITHUB_HOST",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "",
+        "GITHUB_TOOLSETS": "",
+        "GITHUB_READ_ONLY": "",
+        "GITHUB_HOST": "https://github.ibm.com"
+      },
+      "alwaysAllow": [
+        "list_pull_requests"
+      ],
+      "disabledTools": [
+        "sub_issue_write",
+        "request_copilot_review",
+        "search_code",
+        "list_tags",
+        "list_releases",
+        "get_tag",
+        "get_release_by_tag",
+        "get_latest_release",
+        "get_label",
+        "fork_repository",
+        "delete_file",
+        "create_repository",
+        "create_or_update_file",
+        "assign_copilot_to_issue",
+        "add_reply_to_pull_request_comment",
+        "add_issue_comment",
+        "add_comment_to_pending_review"
+      ]
+    },
+    "context-studio": {
+      "type": "streamable-http",
+      "url": "https://servicesessentials.ibm.com/mcp-gateway/service/gateway/servers/8ccdd203bdee4014b08e82eedb6046e2/mcp",
+      "headers": {
+        "Authorization": "Bearer ",
+        "x-api-key": ""
+      },
+      "disabledTools": [
+        "context-broker-vector-query",
+        "context-broker-graph-query",
+        "context-broker-get-contexts",
+        "context-broker-get-context-metadata",
+        "context-broker-post-events",
+        "context-broker-get-context-schema"
+      ]
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "codegraph",
+      "args": [
+        "serve",
+        "--mcp"
+      ],
+      "alwaysAllow": [
+        "codegraph_explore"
+      ]
+    }
+  }
+}

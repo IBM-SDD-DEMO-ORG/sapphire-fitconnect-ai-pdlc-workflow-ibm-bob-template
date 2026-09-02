@@ -1,0 +1,74 @@
+{
+   "type":"DPDE-RECIPE",
+   "id":"DPDE-RECIPE-101",
+   "name":"Digital Product Design & Engineering Recipe",
+   "version":"v1.1",
+   "description":"The spec driven development recipe for digital product design and engineering",
+   "SHA":"dd1b3b050313fb119b3c42b547e18658e227d78a",
+   "GitHub release":"https://github.ibm.com/IBMC-HCD-DPDE/ai-pdlc-workflow-sidekick-ui/releases/tag/v1.0.0",
+   "recipe":{
+      "phases":[
+         {
+            "id":"spec",
+            "label":"Specification",
+            "location":"local",
+            "input": "JIRA",
+            "output": "spec.md"
+         },
+         {
+            "id":"design",
+            "label":"Design",
+            "location":"local",
+            "input": "spec.md",
+            "output": "plan.md"
+         },
+         {
+            "id":"tasks",
+            "label":"Tasks",
+            "location":"local",
+            "input": "plan.md",
+            "output": "task.md"
+         },
+         {
+            "id":"implementation",
+            "label":"Implementation",
+            "location":"local",
+            "input": "task.md",
+            "output": "Implementation PRs"
+         },
+         {
+            "id":"code-review",
+            "label":"Code Review",
+            "location":"local",
+            "input": "Implementation PRs",
+            "output": "Review comments"
+         }
+      ],
+      "transitions":[
+         {
+            "from":"spec",
+            "to":"design",
+            "requiresApproval":true,
+            "approvalType":"github-pr"
+         },
+         {
+            "from":"design",
+            "to":"tasks",
+            "requiresApproval":true,
+            "approvalType":"github-pr"
+         },
+         {
+            "from":"tasks",
+            "to":"implementation",
+            "requiresApproval":true,
+            "approvalType":"github-pr"
+         },
+         {
+            "from":"implementation",
+            "to":"code-review",
+            "requiresApproval":false,
+            "approvalType":null
+         }
+      ]
+   }
+}

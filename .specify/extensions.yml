@@ -1,0 +1,37 @@
+# .specify/extensions.yml
+# Extension hooks that run automatically at the end of PDLC speckit phases.
+# Each hook invokes the observe-workflow skill to record token/cost observability
+# data for the completed task into specs/<jira_id>/observe-workflow.md.
+#
+# db_path and project_id are read from settings.yaml (observe.db_path / observe.project_id).
+# The calling speckit skill (specify, clarify, plan, implement) resolves and supplies all
+# four arguments to observe-workflow at invocation time.
+
+hooks:
+  after_specify:
+    - extension: observe-workflow
+      command: "observe-workflow"
+      description: "Record token usage and cost metrics for the completed specify task"
+      optional: false
+      enabled: true
+
+  after_clarify:
+    - extension: observe-workflow
+      command: "observe-workflow"
+      description: "Record token usage and cost metrics for the completed clarify task"
+      optional: false
+      enabled: true
+
+  after_plan:
+    - extension: observe-workflow
+      command: "observe-workflow"
+      description: "Record token usage and cost metrics for the completed plan task"
+      optional: false
+      enabled: true
+
+  after_implement:
+    - extension: observe-workflow
+      command: "observe-workflow"
+      description: "Record token usage and cost metrics for the completed implement task"
+      optional: false
+      enabled: true

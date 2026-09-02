@@ -1,0 +1,13 @@
+project_name: Your-project-name
+project_description: Your-project-description
+settings_conf: settings.yaml
+source_repos:
+  - github_repo: Your-project-repo-1
+    name: Your-project-repo-1-name
+    language: typescript
+    framework: react
+
+  - github_repo: Your-project-repo-2
+    name: Your-project-repo-2-name
+    language: javascript
+    framework: node/express/apollo-server

@@ -1,0 +1,7 @@
+{
+  "integration": "bob",
+  "version": "0.5.0",
+  "scripts": {
+    "update-context": ".specify/integrations/bob/scripts/update-context.ps1"
+  }
+}

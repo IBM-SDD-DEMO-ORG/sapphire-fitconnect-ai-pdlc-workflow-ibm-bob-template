@@ -1,0 +1,96 @@
+# Workspace Settings
+# Central configuration for all workspace-level agent behaviour.
+# Read by agents that support it; $ARGUMENTS passed to an agent always take precedence.
+
+# ---------------------------------------------------------------------------
+# constitution.resolve — global constitution source
+# ---------------------------------------------------------------------------
+# Defines where constitution.resolve fetches the global constitution from.
+# Set exactly ONE mode; comment out the other two.
+#
+# Mode A — local path (sibling repo directory or direct file path)
+#   global_source:
+#     mode: local
+#     path: ../org-policy-files/engineering
+#
+# Mode B — GitHub MCP (fetch from a remote repository)
+#   global_source:
+#     mode: github
+#     ref: owner/repo:path/to/constitution.md
+#     # branch/tag optional; defaults to repo default branch
+#     # example: my-org/global-policy:engineering/constitution.md@main
+#
+# Mode C — no global (local constitution only)
+#   global_source:
+#     mode: none
+
+constitution:
+  global_source:
+    mode: external  #allowed values: local | external | none
+    connection-types:
+      MCP:
+        provider: context-studio
+
+# ---------------------------------------------------------------------------
+# pdlc — PDLC workflow settings
+# ---------------------------------------------------------------------------
+# approvals: defines which role must GitHub-approve each artifact PR.
+#   approver_role refers to a key under pdlc.roles below.
+#   require_merge: true  → PR must be fully merged before the next phase may start.
+#   require_merge: false → APPROVED review state is sufficient; merge not required.
+#
+# roles: maps each role name to a GitHub team slug and/or a list of GitHub usernames.
+#   At least one of github_team or github_users must be set for each role in use.
+#   github_team format: "org/team-slug"  (e.g. "my-org/product-owners")
+#   github_users: list of individual login names as a fallback or supplement.
+
+pdlc:
+  # submitter_role: the role of the person who runs the PDLC workflow agent —
+  # submits the spec PR, commits plan/tasks artifacts, and drives the story to completion.
+  # Built-in values: fde | application_engineer
+  # You may also define a custom role name here and add it under pdlc.roles below.
+  submitter_role: application_engineer
+
+  approvals:
+    spec:
+      approver_role: product_owner   # spec PR must be approved by a product owner
+      require_merge: true            # spec PR must be merged before planning begins
+    plan:
+      approver_role: fde             # plan artifacts PR must be approved by an FDE
+      require_merge: false           # approval is sufficient; merge not required
+    tasks:
+      approver_role: fde             # tasks artifact PR must be approved by an FDE
+      require_merge: false
+
+  roles:
+    # The submitter role; change submitter_role above to use a different entry.
+    fde:
+      github_team: ""                # e.g. "my-org/fde-team"
+      github_users: []               # e.g. ["alice", "bob"]
+    application_engineer:
+      github_team: ""                # e.g. "my-org/app-engineers"
+      github_users: []
+    product_owner:
+      github_team: ""                # e.g. "my-org/product-owners"
+      github_users: []
+    fda:
+      github_team: ""                # e.g. "my-org/fda-team"
+      github_users: []
+
+# ---------------------------------------------------------------------------
+# observe — observability settings for the observe-workflow skill
+# ---------------------------------------------------------------------------
+# db_path:    Absolute path to the Bob SQLite database file on this machine.
+# project_id: The Bob project ID for this workspace (visible in the Bob UI or
+#             in the task JSON key, e.g. the third segment of contextWindowBreakdown.key).
+
+observe:
+  db_path: ""
+  project_id: ''
+
+# ---------------------------------------------------------------------------
+# Add further workspace-level settings below as needed, e.g.:
+#
+# speckit:
+#   default_template_dir: .specify/templates
+# ---------------------------------------------------------------------------

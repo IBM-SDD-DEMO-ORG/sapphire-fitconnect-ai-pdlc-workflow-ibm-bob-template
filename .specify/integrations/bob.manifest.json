@@ -1,0 +1,18 @@
+{
+  "integration": "bob",
+  "version": "0.5.0",
+  "installed_at": "2026-04-05T17:12:51.512567+00:00",
+  "files": {
+    ".bob/commands/speckit.analyze.md": "878794d6a6e36b485c29c341c2de20c9645d9f4bbe9d14f116f2d01b7a54f144",
+    ".bob/commands/speckit.checklist.md": "61c18de271af8709cc43d10daf637a530b625c2924ab7bd94cf6134fd7db0c2a",
+    ".bob/commands/speckit.clarify.md": "f3df62502e93b4373013dfbbd179176770cce3073b60e9c361aea1e8426ce455",
+    ".bob/commands/speckit.constitution.md": "89e14df67db5f8a52b8802a6e396b69d3e4badc46e97de804810aaaf439e0d5e",
+    ".bob/commands/speckit.implement.md": "9dda40376414146a8992d09e6853976c75708ba4cad7d9df9fcd6e7faa8f0a4c",
+    ".bob/commands/speckit.plan.md": "6e03a63c79cc8826bc833002e03ad8770423bc4217168daf141a21c24231f962",
+    ".bob/commands/speckit.specify.md": "f75a5652f234d49b26df322d52f9d2dd518f66f02a3d55954a6054dd15bd007c",
+    ".bob/commands/speckit.tasks.md": "d505523168e1f1c758350da9d45c08ff990ed8686d6bc8451db8b89a145768a4",
+    ".bob/commands/speckit.taskstoissues.md": "244ec825d8bd8bedafe3212aea9a059e6a47fcd7a29ee148c5a40b5ecbcb5198",
+    ".specify/integrations/bob/scripts/update-context.ps1": "5a0e732dc81fe144011b553ebe8844aa256ba304430177e490c8bd6a6ad61fb9",
+    ".specify/integrations/bob/scripts/update-context.sh": "b85c04394db26a54e587d9805d634fe042ba46be7fa3b8aedc20fe32a73d94c6"
+  }
+}
