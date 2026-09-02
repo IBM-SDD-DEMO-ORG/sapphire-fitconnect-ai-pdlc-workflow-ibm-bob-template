@@ -7,7 +7,7 @@
 - Last Updated: 2025-07-17
 
 ## CURRENT_STAGE
-PHASE_3A_PENDING
+PHASE_3B_PENDING
 
 ## Completed Phases
 - [x] Phase 1: Constitution Verified
@@ -15,7 +15,7 @@ PHASE_3A_PENDING
 - [x] CHECKPOINT 1: Story Confirmed
 - [x] Phase 3: Specification Created
 - [x] CHECKPOINT 2: Submitter Review
-- [ ] Phase 3A: Spec PR Raised
+- [x] Phase 3A: Spec PR Raised
 - [ ] Phase 3B: Spec PR Approved
 - [ ] Phase 3C: Plan Entry Gates
 - [ ] Phase 4: Plan
@@ -41,7 +41,7 @@ PHASE_3A_PENDING
 - [ ] CHECKPOINT 5: PRs Created
 
 ## Key Data
-- Spec PR: (not yet raised)
+- Spec PR: https://github.com/IBM-SDD-DEMO-ORG/sapphire-fitconnect-ai-pdlc-workflow-ibm-bob-template/compare/SDDSDLC-223 (manually raise — GitHub MCP not connected)
 - Spec Approval (`product_owner`): (pending)
 - Plan PR: (not yet raised)
 - Plan Approval (`fde`): (pending)
